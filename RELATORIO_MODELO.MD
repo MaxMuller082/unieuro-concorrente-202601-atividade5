@@ -1,10 +1,10 @@
 # Relatório da NOME DA ATIVIDADE
 
-**Disciplina:** 
-**Aluno(s):**
-**Turma:**
-**Professor:**
-**Data:**
+**Disciplina:PROGRAMAÇÃO CONCORRENTE E DISTRIBUÍDA** 
+**Aluno(s):Max Muller Da Silva Rosa**
+**Turma:S.I 4 semestre**
+**Professor:Rafael**
+**Data:10/04/2026**
 
 ---
 
@@ -40,13 +40,13 @@ Informar as características do hardware e software utilizados na execução dos
 
 | Item                        | Descrição |
 | --------------------------- | --------- |
-| Processador                 |           |
-| Número de núcleos           |           |
-| Memória RAM                 |           |
-| Sistema Operacional         |           |
-| Linguagem utilizada         |           |
-| Biblioteca de paralelização |           |
-| Compilador / Versão         |           |
+| Processador                 | Intel Core i5 (12ª geração) |
+| Número de núcleos           | 12 (lógicos) |
+| Memória RAM                 | 16 GB |
+| Sistema Operacional         | Windows 11 |
+| Linguagem utilizada         | Python |
+| Biblioteca de paralelização | mpi4py (MPI) |
+| Compilador / Versão         | Python 3.13 |
 
 ---
 
@@ -94,11 +94,11 @@ Preencha a tabela com os **tempos médios de execução** obtidos.
 
 | Nº Threads/Processos | Tempo de Execução (s) |
 | -------------------- | --------------------- |
-| 1                    |                       |
-| 2                    |                       |
-| 4                    |                       |
-| 8                    |                       |
-| 12                   |                       |
+| 1                    |          34.30        |
+| 2                    |          27.03        |
+| 4                    |          17.52        |
+| 8                    |          13.46        |
+| 12                   |          10.43        |
 
 ---
 
@@ -135,58 +135,34 @@ Preencha a tabela abaixo utilizando os tempos medidos.
 
 | Threads/Processos | Tempo (s) | Speedup | Eficiência |
 | ----------------- | --------- | ------- | ---------- |
-| 1                 |           | 1.0     | 1.0        |
-| 2                 |           |         |            |
-| 4                 |           |         |            |
-| 8                 |           |         |            |
-| 12                |           |         |            |
+| 1                 |   34.30   | 1.0     | 1.0        |
+| 2                 |   27.03   | 1.27    | 0.63       |
+| 4                 |   17.52   | 1.96    | 0.49       |
+| 8                 |   13.46   | 2.55    | 0.32       |
+| 12                |   10.43   | 3.29    | 0.27      |
 
 ---
 
 # 7. Gráfico de Tempo de Execução
 
-Construa um gráfico mostrando o **tempo de execução em função do número de threads/processos**.
 
-## Orientações
 
-* Eixo X: número de threads/processos
-* Eixo Y: tempo de execução (segundos)
-
-Inserir o gráfico abaixo:
-
-![Gráfico Tempo Execução](graficos/tempo_execucao.png)
+![Gráfico Tempo Execução](Tempo.png)
 
 ---
 
 # 8. Gráfico de Speedup
 
-Construa um gráfico mostrando o **speedup obtido**.
 
-## Orientações
-
-* Eixo X: número de threads/processos
-* Eixo Y: speedup
-* Incluir também a **linha de speedup ideal (linear)** para comparação
-
-Inserir o gráfico abaixo:
-
-![Gráfico Speedup](graficos/speedup.png)
+![Gráfico Speedup](Speedup.png)
 
 ---
 
 # 9. Gráfico de Eficiência
 
-Construa um gráfico mostrando a **eficiência da paralelização**.
 
-## Orientações
 
-* Eixo X: número de threads/processos
-* Eixo Y: eficiência
-* Valores entre 0 e 1
-
-Inserir o gráfico abaixo:
-
-![Gráfico Eficiência](graficos/eficiencia.png)
+![Gráfico Eficiência](Eficiencia.png)
 
 ---
 
@@ -197,10 +173,30 @@ Realize uma análise crítica dos resultados obtidos.
 ## Questões a serem respondidas
 
 * O speedup obtido foi próximo do ideal?
+O speedup obtido não foi linear, ficando abaixo do ideal conforme o número de processos aumenta. Isso indica a presença de overhead de paralelização.
+
 * A aplicação apresentou escalabilidade?
+A aplicação apresentou escalabilidade limitada, com melhorias de desempenho ao aumentar o número de processos, porém com ganhos decrescentes.
+
 * Em qual ponto a eficiência começou a cair?
+A eficiência começou a cair significativamente a partir de 4 processos, indicando que o custo de gerenciamento e comunicação começou a impactar mais o desempenho.
+
 * O número de threads ultrapassa o número de núcleos físicos da máquina?
+O número de processos (12) corresponde aproximadamente ao número de núcleos lógicos da máquina, o que pode gerar competição por recursos.
+
 * Houve overhead de paralelização?
+Houve overhead de paralelização devido a:
+
+Comunicação entre processos MPI
+Sincronização
+Parte do código que permanece serial (Lei de Amdahl)
+
+Possíveis causas para perda de desempenho:
+
+Sobrecarga de comunicação entre processos
+Divisão de trabalho não totalmente balanceada
+Limitações de memória e cache
+Overhead do próprio MPI
 
 Discutir possíveis causas para:
 
@@ -214,13 +210,17 @@ Discutir possíveis causas para:
 
 # 11. Conclusão
 
-Apresente as conclusões do experimento.
+O uso de paralelismo trouxe ganho significativo de desempenho, reduzindo o tempo de execução de 34.30 segundos para 10.43 segundos com 12 processos.
 
-## Sugestões de pontos a comentar
+O melhor tempo foi obtido com 12 processos, porém a melhor eficiência foi observada com menor número de processos.
 
-* O paralelismo trouxe ganho significativo de desempenho?
-* Qual foi o melhor número de threads/processos?
-* O programa escala bem com o aumento do paralelismo?
-* Quais melhorias poderiam ser feitas na implementação?
+O programa não escala de forma linear, apresentando limitações devido ao overhead de paralelização e restrições do hardware.
+
+Melhorias possíveis incluem:
+
+Otimização da divisão de tarefas
+Redução de comunicação entre processos
+Melhor balanceamento de carga
+Uso de técnicas híbridas (MPI + threads)
 
 ---
